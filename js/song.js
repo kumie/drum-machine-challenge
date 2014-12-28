@@ -54,7 +54,7 @@ var Song = Stapes.subclass({
 
   play: function() {
     var beats = this.getBeats(),
-        tempo = Math.floor(this.model.getTempo() * 1000 );
+        tempo = Math.floor(this.model.getTempo() * 1000);
 
     if (!beats) {
       return;
@@ -62,7 +62,7 @@ var Song = Stapes.subclass({
     this.emit(Song.EVENTS.START);
 
     this.tempo = window.setInterval(function() {
-      this.setKitClass(beats[0]);
+      this.setKitClassName(beats[0]);
       beats.shift();
 
       if (!beats.length) {
@@ -73,12 +73,12 @@ var Song = Stapes.subclass({
 
   stop: function() {
     window.clearInterval(this.tempo);
-    this.setKitClass();
+    this.setKitClassName();
 
     console.timeEnd('play time');
   },
 
-  setKitClass: function(suffix) {
+  setKitClassName: function(suffix) {
     suffix = suffix || '';
 
     var kit = document.querySelector(Song.$CSS.KIT);
