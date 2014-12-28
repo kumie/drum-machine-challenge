@@ -15,7 +15,7 @@ var Song = Stapes.subclass({
   constructor: function(config) {
     this.model = new Model({
       bpm: config.bpm,
-      title: config.song,
+      title: config.title,
       repeat: config.repeat
     });
 
@@ -29,9 +29,9 @@ var Song = Stapes.subclass({
 
   getBeats: function() {
     return this.model.notes.map(function(notes) {
-      if (_.isString(notes)) {
+      if (typeof notes === 'string') {
         return this.getInstrument(notes).play();
-      } else if (_.isArray(notes)) {
+      } else if (notes instanceof Array) {
         var output = '',
             i = 0,
             notesLen = notes.length;
@@ -51,7 +51,7 @@ var Song = Stapes.subclass({
 
   play: function() {
     var beats = this.getBeats(),
-        tempo = Math.floor (this.model.getTempo() * 1000 );
+        tempo = Math.floor(this.model.getTempo() * 1000 );
 
     this.emit('playStart');
 

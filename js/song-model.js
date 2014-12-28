@@ -18,11 +18,22 @@ var Model = Stapes.subclass({
   },
 
   setSongData: function(title) {
-    var song = _.findWhere(songCollection, title);
+    var song,
+        i = 0,
+        songCollectionLen = songCollection.length;
+
+    for (; i < songCollectionLen; i++) {
+      if (songCollection[i].Title === title) {
+        song = songCollection[i];
+        break;
+      }
+    }
 
     if (song) {
       this.notes = song.Notes;
       this.title = song.Title;
+    } else {
+      throw new Error('Could not find song with title ' + title);
     }
   },
 
