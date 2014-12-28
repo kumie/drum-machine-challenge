@@ -40,7 +40,8 @@ describe('Song', function() {
   describe('View', function() {
     it('Should get the beats from a song', function() {
       var notes = _.flatten(songCollection[0].Notes);
-      expect(song.getBeats().length).toBe(notes.length - 3); //we have 3 beats that use 2 instruments
+
+      expect(song.getBeats().length).toBe(notes.length - 4); //we have 2 beats that use 2 instruments, and 1 that uses 3
     });
 
     it('Should replay the song when the repeat flag is set', function() {
