@@ -18,13 +18,23 @@ describe('Song', function() {
     song.stop();
   });
 
-  it ('Should add a new song to the model', function() {
-    expect(model.notes.length).not.toBe(0);
-    expect(model.title).toBe(songTitle);
-  });
+  describe('Model', function() {
+    it('Should add a new song to the model', function() {
+      expect(model.notes.length).not.toBe(0);
+      expect(model.title).toBe(songTitle);
+    });
 
-  it('Should throw an exception when you set a song\'s data if no song was found', function() {
-    expect(model.setSongData.bind(null, 'title')).toThrow();
+    it('Should throw an exception when you set a song\'s data if no song was found', function() {
+      expect(model.setSongData.bind(null, 'title')).toThrow();
+    });
+
+    it('Should get the correct tempo of a song', function() {
+      //at 128 bpm
+      expect(model.getTempo()).toBe(0.234375);
+
+      model.bpm = 60;
+      expect(model.getTempo()).toBe(.5);
+    });
   });
 
   describe('View', function() {
@@ -33,7 +43,7 @@ describe('Song', function() {
       expect(song.getBeats().length).toBe(notes.length - 1);
     });
 
-    it('Should replay the song when on repeat', function() {
+    it('Should replay the song when the repeat flag is set', function() {
       var song = new Song({
         bpm: 128,
         title: songTitle,
@@ -43,7 +53,7 @@ describe('Song', function() {
 
       spyOn(song, 'replay');
 
-      song.emit('playDone');
+      song.emit(Song.EVENTS.DONE);
       expect(song.replay).toHaveBeenCalled();
     });
 
