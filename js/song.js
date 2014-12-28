@@ -24,7 +24,10 @@ var Song = Stapes.subclass({
     this.snare = new Snare();
 
     this.bindEvents();
-    this.play();
+
+    if (config.autoPlay) {
+      this.play();
+    }
   },
 
   getBeats: function() {
@@ -76,7 +79,9 @@ var Song = Stapes.subclass({
     suffix = suffix || '';
 
     var kit = document.querySelector(Song.$CSS.KIT);
-    kit.className = Song.CSS.KIT + ' ' + suffix;
+    if (kit) {
+      kit.className = Song.CSS.KIT + ' ' + suffix;
+    }
   },
 
   bindEvents: function() {
