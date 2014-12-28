@@ -1,0 +1,50 @@
+.container {
+  width: 100%;
+}
+
+.kit {
+  margin: 0 auto;
+  padding: 30px;
+  width: 660px;
+}
+
+.top {
+  margin: 0 auto;
+  width: 460px;
+}
+
+.bottom {
+  margin: 0 auto;
+  width: 230px;
+}
+
+.instrument {
+  background: #000;
+  border-radius: 50%;
+  display: inline-block;
+  height: 200px;
+  margin-right: 20px;
+  text-align: center;
+  width: 200px;
+}
+
+.row .instrument:last-of-type {
+  margin-right: 0;
+}
+
+.instrument .label {
+  color: #fff;
+  display: inline-block;
+  visibility: hidden;
+  margin-top: 81px;
+}
+
+.kit.snare .snare .label,
+.kit.hi-hat .hi-hat .label,
+.kit.kick .kick .label {
+  visibility: visible;
+}
+
+.snare {
+
+}

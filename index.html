@@ -1,0 +1,44 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drum Machine</title>
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+<div class="container">
+  <div class="kit">
+    <div class="row top">
+      <div class="instrument hi-hat">
+        <div class="label">Hi Hat</div>
+      </div>
+      <div class="instrument kick">
+        <div class="label">Kick</div>
+      </div>
+    </div>
+
+    <div class="row bottom">
+      <div class="instrument snare">
+        <div class="label">Snare</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/vendor/stapes.js"></script>
+<script src="js/song-data.js"></script>
+<script src="js/instruments.js"></script>
+<script src="js/song-model.js"></script>
+<script src="js/song.js"></script>
+<script>
+  new Song({
+    bpm: 128,
+    title: 'Animal Rights',
+    repeat: false
+  });
+</script>
+</body>
+</html>
