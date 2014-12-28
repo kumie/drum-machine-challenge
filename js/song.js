@@ -51,7 +51,7 @@ var Song = Stapes.subclass({
 
   play: function() {
     var beats = this.getBeats(),
-        tempo = this.model.getTempo() * 1000;
+        tempo = Math.floor (this.model.getTempo() * 1000 );
 
     this.emit('playStart');
 
@@ -68,6 +68,7 @@ var Song = Stapes.subclass({
   stop: function() {
     window.clearInterval(this.tempo);
     this.setKitClass();
+
     console.timeEnd('play time');
   },
 

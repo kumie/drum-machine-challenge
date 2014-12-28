@@ -27,8 +27,7 @@ var Model = Stapes.subclass({
   },
 
   getTempo: function() {
-    //4/4 time signature
-    return (( 60 / this.bpm ) * 4) / 8;
+    return ( ( 60 / this.bpm ) * 4 ) / 8;     //4/4 time signature
   }
 
 });

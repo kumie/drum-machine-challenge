@@ -45,6 +45,14 @@
   visibility: visible;
 }
 
-.snare {
+.instrument.snare {
+  background: #3E5151;
+}
 
+.instrument.kick {
+  background: #2C3A3A;
+}
+
+.instrument.hi-hat {
+  background: #121F1F;
 }
