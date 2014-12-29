@@ -35,6 +35,25 @@ describe('Song', function() {
       model.bpm = 60;
       expect(model.getTempo()).toBe(.5);
     });
+
+    it('Should change the volume of a song', function() {
+      expect(song.model.get('volume')).toBe(10);
+
+      song.model.setVolume({ direction: 'up' });
+      expect(song.model.get('volume')).toBe(11);
+
+      song.model.setVolume({ direction: 'down' });
+      expect(song.model.get('volume')).toBe(10);
+
+      song.model.setVolume({ value: 20 });
+      expect(song.model.get('volume')).toBe(20);
+
+      song.model.setVolume({ value: 21 });
+      expect(song.model.get('volume')).toBe(20);
+
+      song.model.setVolume({ value: -1 });
+      expect(song.model.get('volume')).toBe(20);
+    });
   });
 
   describe('View', function() {

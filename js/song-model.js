@@ -10,9 +10,12 @@ var Model = Stapes.subclass({
 
   repeat: false,
 
+  volume: 0, //observable property
+
   constructor: function(config) {
     this.bpm = config.bpm || 128;
     this.repeat = config.repeat || false;
+    this.setVolume({ value: config.volume || 10 });
 
     this.setSongData(config.title);
   },
@@ -39,6 +42,22 @@ var Model = Stapes.subclass({
 
   getTempo: function() {
     return ( ( 60 / this.bpm ) * 4 ) / 8;     //4/4 time signature
+  },
+
+  setVolume: function(config) {
+    var min = 0,
+        max = 20,
+        currentVolume = this.get('volume');
+
+    if (config.direction) {
+      if (config.direction === 'up' && currentVolume !== max) {
+        this.set('volume', currentVolume + 1);
+      } else if (config.direction === 'down' && currentVolume !== min) {
+        this.set('volume', currentVolume - 1);
+      }
+    } else if (config.value && config.value < max + 1 && config.value > min - 1) {
+      this.set('volume', config.value);
+    }
   }
 
 });

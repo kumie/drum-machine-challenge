@@ -12,6 +12,8 @@ var Song = Stapes.subclass({
 
   tempo: null,
 
+  volumeController: null,
+
   constructor: function(config) {
     this.model = new Model({
       bpm: config.bpm,
@@ -23,11 +25,31 @@ var Song = Stapes.subclass({
     this.hiHat = new HiHat();
     this.snare = new Snare();
 
+    this.volumeController = document.querySelector('[data-behavior="set-volume"]');
     this.bindEvents();
 
     if (config.autoPlay) {
       this.play();
     }
+  },
+
+  play: function() {
+    var beats = this.getBeats(),
+        tempo = Math.floor(this.model.getTempo() * 1000);
+
+    if (!beats) {
+      return;
+    }
+    this.emit(Song.EVENTS.START);
+
+    this.tempo = window.setInterval(function() {
+      this.setKitClassName(beats[0]);
+      beats.shift();
+
+      if (!beats.length) {
+        this.emit('playDone');
+      }
+    }.bind(this), tempo);
   },
 
   getBeats: function() {
@@ -52,30 +74,9 @@ var Song = Stapes.subclass({
     }.bind(this));
   },
 
-  play: function() {
-    var beats = this.getBeats(),
-        tempo = Math.floor(this.model.getTempo() * 1000);
-
-    if (!beats) {
-      return;
-    }
-    this.emit(Song.EVENTS.START);
-
-    this.tempo = window.setInterval(function() {
-      this.setKitClassName(beats[0]);
-      beats.shift();
-
-      if (!beats.length) {
-        this.emit('playDone');
-      }
-    }.bind(this), tempo);
-  },
-
   stop: function() {
     window.clearInterval(this.tempo);
     this.setKitClassName();
-
-    console.timeEnd('play time');
   },
 
   setKitClassName: function(suffix) {
@@ -90,6 +91,7 @@ var Song = Stapes.subclass({
   bindEvents: function() {
     this.on(Song.EVENTS.DONE, function() {
       this.stop();
+      console.timeEnd('play time');
       if (this.model.repeat) {
         this.replay();
       }
@@ -97,6 +99,16 @@ var Song = Stapes.subclass({
 
     this.on(Song.EVENTS.START, function() {
       console.time('play time');
+    });
+
+    if (this.volumeController) {
+      this.volumeController.onchange = function(evt){
+        this.setVolume(evt.currentTarget.value);
+      }.bind(this);
+    }
+
+    this.model.on('change:volume', function(volume) {
+      console.log('volume is at ' + volume);
     });
   },
 
@@ -112,6 +124,10 @@ var Song = Stapes.subclass({
 
   replay: function() {
     this.play();
+  },
+  
+  setVolume: function(value) {
+    this.model.setVolume({ value: value });
   }
 
 });

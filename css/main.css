@@ -56,3 +56,8 @@
 .instrument.hi-hat {
   background: #121F1F;
 }
+
+.controls {
+  margin: 0 auto;
+  width: 147px;
+}
