@@ -47,7 +47,7 @@ var Song = Stapes.subclass({
       beats.shift();
 
       if (!beats.length) {
-        this.emit('playDone');
+        this.emit(Song.EVENTS.DONE);
       }
     }.bind(this), tempo);
   },
