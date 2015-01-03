@@ -29,3 +29,19 @@ var Snare = Instrument.subclass({
   className: 'snare'
 
 });
+
+/**
+ * Creates and returns an array containing an object of each instrument passed in.
+ * @example new InstrumentFactory([ 'HiHat' ]) => [ { methodName: 'hiHat', constructor: constructor } ]
+ * @param {Array} instruments
+ * @returns {Array}
+ * @constructor
+ */
+var InstrumentFactory = function(instruments) {
+  return instruments.map(function(instrument) {
+    var constructor = capitalize(instrument),
+        methodName = toCamelCase(instrument);
+
+    return { methodName: methodName, constructor: constructor };
+  }.bind(this));
+};

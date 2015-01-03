@@ -88,8 +88,12 @@ var Song = Stapes.subclass({
         .uniq()
         .value();
 
-    new SongInstrumentFactory(instruments).forEach(function(instrument) {
-      this.instruments[instrument.methodName] = instrument.constructor;
+    new InstrumentFactory(instruments).forEach(function(instrument) {
+      var constructor = window[instrument.constructor];
+
+      if (typeof constructor === 'function') {
+        this.instruments[instrument.methodName] = new constructor();
+      }
     }.bind(this));
   },
 
