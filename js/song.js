@@ -4,15 +4,11 @@ var Song = Stapes.subclass({
 
   model: null,
 
-  kick: null,
-
-  hiHat: null,
-
-  snare: null,
-
   tempo: null,
 
   volumeController: null,
+
+  instruments: [],
 
   constructor: function(config) {
     this.model = new Model({
@@ -21,11 +17,8 @@ var Song = Stapes.subclass({
       repeat: config.repeat
     });
 
-    this.kick  = new Kick();
-    this.hiHat = new HiHat();
-    this.snare = new Snare();
-
     this.volumeController = document.querySelector('[data-behavior="set-volume"]');
+    this.createInstruments();
     this.bindEvents();
 
     if (config.autoPlay) {
@@ -54,16 +47,26 @@ var Song = Stapes.subclass({
 
   getBeats: function() {
     return this.model.notes.map(function(notes) {
+      var instrument;
+
       if (typeof notes === 'string') {
-        return this.getInstrument(notes).play();
+        instrument = this.getInstrument(notes);
+        if (instrument) {
+          return instrument.play();
+        }
       } else if (notes instanceof Array) {
         var output = '',
             i = 0,
-            notesLen = notes.length;
+            notesLen = notes.length,
+            note;
 
         for (; i < notesLen; i++) {
-          var note = notes[i];
-          output += this.getInstrument(note).play();
+          note = notes[i];
+          instrument = this.getInstrument(note);
+
+          if (instrument) {
+            output += instrument.play();
+          }
           if (i !== notesLen - 1) {
             output += ' ';
           }
@@ -77,6 +80,21 @@ var Song = Stapes.subclass({
   stop: function() {
     window.clearInterval(this.tempo);
     this.setKitClassName();
+  },
+
+  createInstruments: function() {
+    var instruments = _.chain(this.model.notes)
+        .flatten()
+        .uniq()
+        .value();
+
+    new SongInstrumentFactory(instruments).forEach(function(instrument) {
+      this.instruments[instrument.methodName] = instrument.constructor;
+    }.bind(this));
+  },
+
+  getInstrument: function(instrument) {
+    return this.instruments[toCamelCase(instrument)];
   },
 
   setKitClassName: function(suffix) {
@@ -110,16 +128,6 @@ var Song = Stapes.subclass({
     this.model.on('change:volume', function(volume) {
       console.log('volume is at ' + volume);
     });
-  },
-
-  getInstrument: function(instrument) {
-    var table = {
-      Kick: this.kick,
-      HiHat: this.hiHat,
-      Snare: this.snare
-    };
-
-    return table[instrument];
   },
 
   replay: function() {
