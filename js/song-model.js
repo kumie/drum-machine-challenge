@@ -15,7 +15,6 @@ var Model = Stapes.subclass({
   constructor: function(config) {
     this.bpm = config.bpm || 128;
     this.repeat = config.repeat || false;
-    this.setVolume({ value: config.volume || 10 });
 
     this.setSongData(config.title);
   },

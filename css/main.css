@@ -61,3 +61,12 @@
   margin: 0 auto;
   width: 147px;
 }
+
+.volume {
+  width: 128px;
+}
+
+.volume-value {
+  width: 128px;
+  text-align: center;
+}

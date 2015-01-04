@@ -21,6 +21,7 @@ var Song = Stapes.subclass({
     this.createInstruments();
     this.bindEvents();
 
+    this.model.setVolume({ value: Song.DEFAULT_VOLUME });
     if (config.autoPlay) {
       this.play();
     }
@@ -82,7 +83,6 @@ var Song = Stapes.subclass({
     this.setKitClassName();
   },
 
-
   /**
    * Creates new instrument objects and adds them to the instruments array
    * @example of what is created -- this.instruments.kick = new Kick();
@@ -132,23 +132,27 @@ var Song = Stapes.subclass({
       console.time('play time');
     });
 
+    this.model.on('change:volume', function(volume) {
+      this.setVolumeElValue(volume);
+    }.bind(this));
+
     if (this.volumeController) {
       this.volumeController.onchange = function(evt){
-        this.setVolume(evt.currentTarget.value);
+        this.model.setVolume({ value: evt.currentTarget.value });
       }.bind(this);
     }
-
-    this.model.on('change:volume', function(volume) {
-      console.log('volume is at ' + volume);
-    });
   },
 
   replay: function() {
     this.play();
   },
-  
-  setVolume: function(value) {
-    this.model.setVolume({ value: value });
+
+  setVolumeElValue: function(volume) {
+    var volumeValueEl = document.querySelector(Song.$CSS.VOLUME);
+
+    if (volumeValueEl) {
+      volumeValueEl.innerHTML = volume;
+    }
   }
 
 });
@@ -158,10 +162,13 @@ Song.CSS = {
 };
 
 Song.$CSS = {
-  KIT: '.' + Song.CSS.KIT
+  KIT: '.' + Song.CSS.KIT,
+  VOLUME: '.volume-value'
 };
 
 Song.EVENTS = {
   DONE: 'playDone',
   START: 'playStart'
 };
+
+Song.DEFAULT_VOLUME = 10;
