@@ -58,8 +58,14 @@ describe('Song', function() {
 
   describe('View', function() {
     it('Should get the beats from a song', function() {
-      song.model.notes = [  "Kick", "HiHat", [ "Kick", "Snare" ] ];
+      song.model.notes = [  'Kick', 'HiHat', [ 'Kick', 'Snare' ] ];
       expect(song.getBeats().length).toBe(3);
+    });
+
+    it('Should create instrument objects and add them to the song\'s instruments array', function() {
+      expect(song.instruments.hiHat).toBeDefined();
+      expect(song.instruments.kick).toBeDefined();
+      expect(song.instruments.snare.play).toBeDefined();
     });
 
     it('Should replay the song when the repeat flag is set', function() {

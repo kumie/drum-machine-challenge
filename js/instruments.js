@@ -6,11 +6,11 @@ var availableInstruments = [
 
 var InstrumentFactory = function(instruments) {
   return instruments.map(function(instrument) {
-    var constructor,
+    var Instrument,
         chosenInstrument = _.findWhere(availableInstruments, { name: instrument });
 
     if (chosenInstrument) {
-      constructor = function(){
+      Instrument = function(){
         this.className = chosenInstrument.className;
 
         this.name = chosenInstrument.name;
@@ -21,6 +21,6 @@ var InstrumentFactory = function(instruments) {
       };
     }
 
-    return constructor;
+    return Instrument;
   }.bind(this));
 };

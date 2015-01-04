@@ -84,8 +84,8 @@ var Song = Stapes.subclass({
 
 
   /**
-   * Creates new instrument objects and attaches them to the prototype
-   * @example of what is created -- this.kick = new Kick();
+   * Creates new instrument objects and adds them to the instruments array
+   * @example of what is created -- this.instruments.kick = new Kick();
    */
   createInstruments: function() {
     var instruments = _.chain(this.model.notes)
