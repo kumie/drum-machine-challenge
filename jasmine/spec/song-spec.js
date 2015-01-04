@@ -57,6 +57,18 @@ describe('Song', function() {
   });
 
   describe('View', function() {
+    var fixtures,
+        kitEl;
+
+    beforeEach(function() {
+      fixtures = addDOMFixtures();
+      kitEl = fixtures.querySelector('.kit');
+    });
+
+    afterEach(function() {
+      removeDOMFixtures();
+    });
+
     it('Should get the beats from a song', function() {
       song.model.notes = [  'Kick', 'HiHat', [ 'Kick', 'Snare' ] ];
       expect(song.getBeats().length).toBe(3);
@@ -83,31 +95,54 @@ describe('Song', function() {
     });
 
     it('Should add a class name to the kit in the DOM', function() {
-      var kit = addDOMFixture(),
-          song;
-
-      song = new Song({
-        bpm: 128,
-        title: songTitle,
-        repeat: false,
-        autoPlay: false
-      });
-
       song.setKitClassName('snare kick');
 
-      expect(kit.className).toContain('snare');
-      expect(kit.className).toContain('kick');
+      expect(kitEl.className).toContain('snare');
+      expect(kitEl.className).toContain('kick');
     });
 
-    var addDOMFixture = function() {
-      var kit = document.createElement('div'),
-          body = document.getElementsByTagName('body')[0];
+    it('Should set the volume value in the DOM when it is changed', function() {
+      var volumeValueEl  = document.querySelector('.volume-value'),
+          newVolume = 15;
 
-      kit.className = 'kit';
-      body.appendChild(kit);
-
-      return kit;
-    };
+      volumeValueEl.value = newVolume;
+      expect(volumeValueEl.value).toBe(newVolume);
+    });
 
   });
+
+  var addDOMFixtures = function() {
+    var container = document.createElement('div'),
+        kit = document.createElement('div'),
+        body = document.getElementsByTagName('body')[0],
+        volumeController = document.createElement('input'),
+        volumeValue = document.createElement('div');
+
+    container.className = 'container';
+    body.appendChild(container);
+
+    //drum kit
+    kit.className = 'kit';
+    container.appendChild(kit);
+
+    //volume stuff
+    volumeValue.className = 'volume-value';
+    container.appendChild(volumeValue);
+
+    volumeController.type = 'range';
+    volumeController.setAttribute('data-behavior', 'set-volume');
+    volumeController.value = Song.DEFAULT_VOLUME;
+    container.appendChild(volumeController);
+
+    return container;
+  };
+
+  var removeDOMFixtures = function() {
+    var container = document.querySelector('.container');
+
+    if (container) {
+      container.parentNode.removeChild(container);
+    }
+  };
+
 });
