@@ -1,47 +1,26 @@
-var Instrument = Stapes.subclass({
+var availableInstruments = [
+  { name: 'HiHat', className: 'hi-hat' },
+  { name: 'Kick',  className: 'kick' },
+  { name: 'Snare', className: 'snare' }
+];
 
-  play: function() {
-    return this.className;
-  }
-
-});
-
-var HiHat = Instrument.subclass({
-
-  label: 'Hi Hat',
-
-  className: 'hi-hat'
-
-});
-
-var Kick = Instrument.subclass({
-
-  label: 'Kick',
-
-  className: 'kick'
-
-});
-
-var Snare = Instrument.subclass({
-
-  label: 'Snare',
-
-  className: 'snare'
-
-});
-
-/**
- * Creates and returns an array containing an object of each instrument passed in.
- * @example new InstrumentFactory([ 'HiHat' ]) => [ { methodName: 'hiHat', constructor: constructor } ]
- * @param {Array} instruments
- * @returns {Array}
- * @constructor
- */
 var InstrumentFactory = function(instruments) {
   return instruments.map(function(instrument) {
-    var constructor = capitalize(instrument),
-        methodName = toCamelCase(instrument);
+    var constructor,
+        chosenInstrument = _.findWhere(availableInstruments, { name: instrument });
 
-    return { methodName: methodName, constructor: constructor };
+    if (chosenInstrument) {
+      constructor = function(){
+        this.className = chosenInstrument.className;
+
+        this.name = chosenInstrument.name;
+
+        this.play = function() {
+          return this.className;
+        };
+      };
+    }
+
+    return constructor;
   }.bind(this));
 };

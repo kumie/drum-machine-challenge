@@ -82,17 +82,26 @@ var Song = Stapes.subclass({
     this.setKitClassName();
   },
 
+
+  /**
+   * Creates new instrument objects and attaches them to the prototype
+   * @example of what is created -- this.kick = new Kick();
+   */
   createInstruments: function() {
     var instruments = _.chain(this.model.notes)
         .flatten()
         .uniq()
         .value();
 
-    new InstrumentFactory(instruments).forEach(function(instrument) {
-      var constructor = window[instrument.constructor];
+    new InstrumentFactory(instruments).forEach(function(Instrument) {
+      var instance,
+          methodName;
 
-      if (typeof constructor === 'function') {
-        this.instruments[instrument.methodName] = new constructor();
+      if (typeof Instrument === 'function') {
+        instance = new Instrument();
+        methodName = toCamelCase(instance.name);
+
+        this.instruments[methodName] = instance;
       }
     }.bind(this));
   },
