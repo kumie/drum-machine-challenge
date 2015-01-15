@@ -50,12 +50,12 @@ var Song = Stapes.subclass({
     return this.model.notes.map(function(notes) {
       var instrument;
 
-      if (typeof notes === 'string') {
+      if (_.isString(notes)) {
         instrument = this.getInstrument(notes);
         if (instrument) {
           return instrument.play();
         }
-      } else if (notes instanceof Array) {
+      } else if (_.isArray(notes)) {
         var output = '',
             i = 0,
             notesLen = notes.length,
@@ -133,7 +133,7 @@ var Song = Stapes.subclass({
     });
 
     this.model.on('change:volume', function(volume) {
-      this.setVolumeElValue(volume);
+      this.setVolumeValueEl(volume);
     }.bind(this));
 
     if (this.volumeController) {
@@ -147,7 +147,7 @@ var Song = Stapes.subclass({
     this.play();
   },
 
-  setVolumeElValue: function(volume) {
+  setVolumeValueEl: function(volume) {
     var volumeValueEl = document.querySelector(Song.$CSS.VOLUME);
 
     if (volumeValueEl) {

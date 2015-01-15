@@ -20,16 +20,7 @@ var Model = Stapes.subclass({
   },
 
   setSongData: function(title) {
-    var song,
-        i = 0,
-        songCollectionLen = songCollection.length;
-
-    for (; i < songCollectionLen; i++) {
-      if (songCollection[i].Title === title) {
-        song = songCollection[i];
-        break;
-      }
-    }
+    var song = _.findWhere(songCollection, { Title: title });
 
     if (song) {
       this.notes = song.Notes;

@@ -1,3 +1,5 @@
+'use strict';
+
 var songCollection = [
   {
     "Title": "Animal Rights",

@@ -1,3 +1,5 @@
+'use strict';
+
 var availableInstruments = [
   { name: 'HiHat', className: 'hi-hat' },
   { name: 'Kick',  className: 'kick' },
